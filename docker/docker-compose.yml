@@ -1,0 +1,20 @@
+
+services:
+  liferay:
+    image: liferay/portal:7.1.0-ga1-201809012030 
+    container_name: liferay
+    restart: always
+    ports:
+      - "8080:8080"
+      
+    environment:
+      - LIFERAY_DISABLE_TRIAL_LICENSE=true
+    volumes:
+     - ./../config/portal-ext.properties:/opt/liferay/portal-ext.properties
+     - ./../deploy:/opt/liferay/deploy
+
+
+
+volumes:
+  liferay_data:
+  db_data:
