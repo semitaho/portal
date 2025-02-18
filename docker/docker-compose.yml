@@ -8,6 +8,8 @@ services:
       - "8080:8080"
       
     environment:
+      - JVM_OPTS=-Xms1024m -Xmx1024m -XX:MaxPermSize=512m
+ 
       - LIFERAY_DISABLE_TRIAL_LICENSE=true
     volumes:
      - ./../config/portal-ext.properties:/opt/liferay/portal-ext.properties
