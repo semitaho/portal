@@ -1,20 +1,38 @@
 
 services:
   liferay:
-    image: liferay/portal:7.1.0-ga1-201809012030 
+    image: liferay/portal:6.2.10.21
     container_name: liferay
     restart: always
     ports:
       - "8080:8080"
       
     environment:
-      - JVM_OPTS=-Xms1024m -Xmx1024m -XX:MaxPermSize=512m
- 
+      - JVM_OPTS=-Xms1024m -Xmx1024m 
+      - JAVA_OPTS=-Xms1024m -Xmx1024m 
+      - LIFERAY_JVM_OPTS=
       - LIFERAY_DISABLE_TRIAL_LICENSE=true
+      - EXECUTABLE=catalffina.sh
+
+      - CATALINA_OPTS="-Dfile.encoding=UTF8 -Djava.net.preferIPv4Stack=true  -Dorg.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES=false -Duser.timezone=Europe/Helsinki -Xmx1024m"
+     # - JAVA_VERSION=zulu11
+     # - JAVA_ENDORSED_DIRS=
+   
+    depends_on:
+      - mssql
     volumes:
      - ./../config/portal-ext.properties:/opt/liferay/portal-ext.properties
-     - ./../deploy:/opt/liferay/deploy
-
+     #- ./../deploy:/opt/liferay/deploy
+     - ./../lib/mssql-jdbc-12.8.1.jre8.jar:/opt/liferay/tomcat/lib/ext/mssql-jdbc-12.8.1.jre8.jar 
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql
+    restart: always
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123
 
 
 volumes:
